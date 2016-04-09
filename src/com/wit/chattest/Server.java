@@ -50,7 +50,7 @@ class ChatSend implements Runnable{
 					}
                                          
 				}
-			     pw.println("ÄãÊÇÖí");    
+			     pw.println("ÄãÊÇÖíma");    
 			}catch(IOException e){
 				e.printStackTrace();
 			}
