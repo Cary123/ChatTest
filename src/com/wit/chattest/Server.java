@@ -45,7 +45,6 @@ class ChatSend implements Runnable{
 				while((line=bis.readLine())!=null){
 					if(line.equals(mess))
 					{	
-						
 						pw.println(bis.readLine());
 						continue flag;
 					}
