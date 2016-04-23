@@ -6,20 +6,35 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Server {	
 	public static void main(String[] args) throws Exception{
 		ServerSocket ss = new ServerSocket(33333);
+		Socket s;
+		OutputStream out;
+		InputStream in;
+		String notice;
+
 		while(true){
-		//new Thread(new ChatRegister(ss.accept())).start();
-		//new Thread(new ChatSend(ss.accept())).start();
-		new Thread(new ChatLogin(ss.accept())).start();
-		
-		}		
+			s=ss.accept();
+			in=s.getInputStream();
+			byte[] head=new byte[1024];
+			int len=in.read(head);
+			notice=new String(head,0,len);
+			if(notice.trim().equals("chat_begin_conn"))
+				new Thread(new ChatSend(s)).start();
+			if(notice.trim().equals("login_begin_conn"))
+				new Thread(new ChatLogin(s)).start();
+			if(notice.trim().equals("register_begin_conn"))
+				new Thread(new ChatRegister(s)).start();
+			
+		}
+
 }
-}
+	}
 
 class ChatLogin implements Runnable{
 	Socket s=null;
@@ -48,7 +63,7 @@ class ChatLogin implements Runnable{
 				if(line.startsWith(num[0])){
 					String[] user=line.split("=");
 					if(line.equals(mess)){
-						pw.println("登陆成功");
+						pw.println("登录成功");
 						s.close();
 						bis.close();
 						return;

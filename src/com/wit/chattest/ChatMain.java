@@ -69,6 +69,7 @@ public class ChatMain extends JFrame {
 		 sokGao=new Socket(InetAddress.getByName("115.159.55.193"),33333);
 		 out=sokGao.getOutputStream();
 		 in=sokGao.getInputStream();
+		 out.write("chat_begin_conn".getBytes());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -272,7 +273,7 @@ public class ChatMain extends JFrame {
 	//	contentPane.add(textArea);
 		
 		
-	//connServer();
+	connServer();
 		
 	}
 }

@@ -151,6 +151,19 @@ public class Register extends JFrame {
 						
 						connServer();
 						try {
+							out.write("register_begin_conn".getBytes());
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}	
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+						try {
 							out.write((textField.getText()+"="+password.getText()).getBytes());
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block

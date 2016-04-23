@@ -113,7 +113,18 @@ public class Login extends JFrame {
 				String password=passwordField.getText();
 				if(username.trim().toCharArray().length==11){
 					connServer();
-				
+						try {
+						out.write("login_begin_conn".getBytes());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}	
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					try {
 						out.write((username+"="+password).getBytes());
 					} catch (IOException e) {
@@ -129,7 +140,7 @@ public class Login extends JFrame {
 						e.printStackTrace();
 					}
 					String mess=new String(buf,0,len).trim();//È¥µô¿Õ¸ñ
-					System.out.println(mess+len);
+					System.out.println(mess+mess);
 					
 					if(mess.equals("µÇÂ¼Ê§°Ü")){
 						try {
@@ -148,6 +159,7 @@ public class Login extends JFrame {
 							e.printStackTrace();
 						}
 						new ChatMain();
+						System.out.println(123);
 						setVisible(false);
 					}
 					
@@ -164,7 +176,8 @@ public class Login extends JFrame {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			new Register();
-			setVisible(false);
+			
+			setVisible(false); 
 				
 			}
 		});
