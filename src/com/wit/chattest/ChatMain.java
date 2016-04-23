@@ -53,7 +53,7 @@ public class ChatMain extends JFrame {
 			public void run() {
 				try {
 					ChatMain frame = new ChatMain();
-					frame.setVisible(true);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -74,6 +74,7 @@ public class ChatMain extends JFrame {
 		}
 	}
 	public ChatMain() {
+		setVisible(true);
 		this.addWindowListener(new WindowAdapter(){
 
 			@Override

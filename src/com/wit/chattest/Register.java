@@ -49,7 +49,7 @@ public class Register extends JFrame {
 			public void run() {
 				try {
 					Register frame = new Register();
-					frame.setVisible(true);
+				
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -75,10 +75,17 @@ public class Register extends JFrame {
 	}
 	
 	public Register() {
+		this.setVisible(true);
 		this.addWindowListener(new WindowAdapter(){
 
 			@Override
 			public void windowClosing(WindowEvent e) {
+				try {
+					sokLog.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				new Login();
 				//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);			
 			}
@@ -129,7 +136,7 @@ public class Register extends JFrame {
 		password_1.setColumns(10);
 		
 		JLabel labelWarm=new JLabel();
-		labelWarm.setText("\u6CE8\u610F\uFF1A\u8D26\u53F7\u540D\u5FC5\u987B\u4E3A\u5B57\u6BCD\uFF0C\u6570\u5B57\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC712\u4F4D\r\n\u5BC6\u7801\u8981\u6C42\u540C\u4E0A");
+		labelWarm.setText("\u6CE8\u610F\uFF1A\u8D26\u53F7\u540D\u5FC5\u987B\u4E3A11\u4F4D\u7684\u624B\u673A\u53F7\uFF0C\u5BC6\u7801\u4E0D\u8D85\u8FC712\u4E2A\u5B57\u7B26");
 		labelWarm.setBounds(10, 233, 414, 21);
 		contentPane.add(labelWarm);
 		
@@ -140,7 +147,8 @@ public class Register extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if(password.getText().equals(password_1.getText())){
-					if(textField.getText().toCharArray().length<=12&&password.getText().toCharArray().length<=12){
+					if(textField.getText().toCharArray().length==11&&password.getText().toCharArray().length<=12){
+						
 						connServer();
 						try {
 							out.write((textField.getText()+"="+password.getText()).getBytes());
@@ -150,19 +158,26 @@ public class Register extends JFrame {
 						}
 						byte[] buf=new byte[1024];
 						int len = 0;
+						String receive="注册失败";
 						try {
 							len = in.read(buf);
-							String receive=new String(buf,0,len);
+							receive=new String(buf,0,len);
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
 						}
-						JOptionPane.showMessageDialog(contentPane,"ok", "提醒",JOptionPane.INFORMATION_MESSAGE);
+						try {
+							sokLog.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						JOptionPane.showMessageDialog(contentPane,receive, "提醒",JOptionPane.INFORMATION_MESSAGE);
 					    new Login();
 					  
 					}
 					else 
-						JOptionPane.showMessageDialog(contentPane, "账号和密码不符要求", "提醒",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(contentPane, "账号或密码不符合规范", "提醒",JOptionPane.INFORMATION_MESSAGE);
 				}
 				else 
 					JOptionPane.showMessageDialog(contentPane, "两次密码不一样", "提醒",JOptionPane.INFORMATION_MESSAGE);

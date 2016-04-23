@@ -1,6 +1,8 @@
 package com.wit.chattest;
 import java.awt.*;
+
 import javax.swing.*;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -10,9 +12,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.net.InetAddress;
@@ -50,7 +54,7 @@ public class Login extends JFrame {
 	
 	public void connServer(){
 		try {
-			 sokLog=new Socket(InetAddress.getByName("115.159.55.193"),11011);
+			 sokLog=new Socket(InetAddress.getByName("115.159.55.193"),33333);
 			 out=sokLog.getOutputStream();
 			 in=sokLog.getInputStream();
 		} catch (IOException e1) {
@@ -94,20 +98,6 @@ public class Login extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		JButton button = new JButton("\u767B\u5F55");
-		button.setBounds(186, 188, 65, 23);
-		contentPane.add(button);
-		
-		JButton button_1 = new JButton("\u6CE8\u518C");
-		button_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			
-						
-			}
-		});
-		button_1.setBounds(84, 188, 70, 23);
-		contentPane.add(button_1);
-		
 		JLabel label = new JLabel("\u672A\u767B\u5F55");
 		label.setBounds(338, 102, 54, 15);
 		contentPane.add(label);
@@ -115,5 +105,72 @@ public class Login extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(126, 127, 143, 21);
 		contentPane.add(passwordField);
+		
+		JButton button = new JButton("\u767B\u5F55");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String username=textField.getText();
+				String password=passwordField.getText();
+				if(username.trim().toCharArray().length==11){
+					connServer();
+				
+					try {
+						out.write((username+"="+password).getBytes());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					byte[] buf=new byte[1024];
+					int len=0;
+					try {
+						len=in.read(buf);
+					} catch (IOException e) {
+						
+						e.printStackTrace();
+					}
+					String mess=new String(buf,0,len).trim();//»•µÙø’∏Ò
+					System.out.println(mess+len);
+					
+					if(mess.equals("µ«¬º ß∞‹")){
+						try {
+							sokLog.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						JOptionPane.showMessageDialog(contentPane, "’À∫≈ªÚ√‹¬Î¥ÌŒÛ", "Ã·–—",JOptionPane.INFORMATION_MESSAGE);
+					}
+					else if(mess.equals("µ«¬º≥…π¶")){
+						try {
+							sokLog.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new ChatMain();
+						setVisible(false);
+					}
+					
+				}
+				else{
+					JOptionPane.showMessageDialog(contentPane, "’À∫≈¥ÌŒÛ", "Ã·–—",JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		});
+		button.setBounds(186, 188, 65, 23);
+		contentPane.add(button);
+		
+		JButton button_1 = new JButton("\u6CE8\u518C");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			new Register();
+			setVisible(false);
+				
+			}
+		});
+		button_1.setBounds(84, 188, 70, 23);
+		contentPane.add(button_1);
+		
+
 	}
 }
